@@ -6,9 +6,12 @@ var score = 0
 
 //Page Load Function
 function pageLoaded(){
-    
+    localStorage.setItem('name', name)
+    localStorage.setItem('email', email)
 }
 
+
+//Change answer ques 1
 function handleChangeModule1(n){
     var x = document.getElementsByClassName("dog")[parseInt(n)].value;
     alert(x)
@@ -16,9 +19,82 @@ function handleChangeModule1(n){
         score += 1
         localStorage.setItem('score', score)
     }
+
+    var statement = {
+        "actor": {
+            "mbox": "mailto:" + localStorage.getItem('email'),
+            "name": localStorage.getItem('name'),
+            "objectType": "Agent"
+        },
+        "verb": {
+            "id": "https://w3id.org/xapi/dod-isd/verbs/accessed",
+            "display": {"en-US": "accessed"}
+        },
+        "object": {
+            "id": "http://punklearning.com/xapi/access_question_1",
+            "definition": {
+                "name": {"en-US": "Accessed question 1"},
+                "description": {"en-US": "Accessed question 1"}
+            },
+            "objectType": "Activity"
+        }
+    }
+
+    ADL.XAPIWrapper.sendStatement(statement);
     
 }
 
+//Send statement after question 1
+function sendDoneQues1(){
+    var statement = {
+        "actor": {
+            "mbox": "mailto:" + localStorage.getItem('email'),
+            "name": localStorage.getItem('name'),
+            "objectType": "Agent"
+        },
+        "verb": {
+            "id": "https://w3id.org/xapi/dod-isd/verbs/advanced",
+            "display": {"en-US": "advanced"}
+        },
+        "object": {
+            "id": "http://punklearning.com/xapi/advanced_1",
+            "definition": {
+                "name": {"en-US": "Move on from question 1"},
+                "description": {"en-US": "Move on from question 1"}
+            },
+            "objectType": "Activity"
+        }
+    }
+
+    ADL.XAPIWrapper.sendStatement(statement);
+}
+
+//Send statement after question 2
+function sendDoneQues2(){
+    var statement = {
+        "actor": {
+            "mbox": "mailto:" + localStorage.getItem('email'),
+            "name": localStorage.getItem('name'),
+            "objectType": "Agent"
+        },
+        "verb": {
+            "id": "https://w3id.org/xapi/dod-isd/verbs/advanced",
+            "display": {"en-US": "advanced"}
+        },
+        "object": {
+            "id": "http://punklearning.com/xapi/advanced_2",
+            "definition": {
+                "name": {"en-US": "Move on from question 2"},
+                "description": {"en-US": "Move on from question 2"}
+            },
+            "objectType": "Activity"
+        }
+    }
+
+    ADL.XAPIWrapper.sendStatement(statement);
+}
+
+//Change answer ques 2
 function handleChangeModule2(n){
     var y = document.getElementsByClassName("cat")[parseInt(n)].value;
     alert(y)
@@ -26,9 +102,32 @@ function handleChangeModule2(n){
         var newScore = parseInt(localStorage.getItem('score')) + 1
         localStorage.setItem('score', newScore)
     }
+
+    var statement = {
+        "actor": {
+            "mbox": "mailto:" + localStorage.getItem('email'),
+            "name": localStorage.getItem('name'),
+            "objectType": "Agent"
+        },
+        "verb": {
+            "id": "https://w3id.org/xapi/dod-isd/verbs/accessed",
+            "display": {"en-US": "accessed"}
+        },
+        "object": {
+            "id": "http://punklearning.com/xapi/access_question_2",
+            "definition": {
+                "name": {"en-US": "Accessed question 2"},
+                "description": {"en-US": "Accessed question 2"}
+            },
+            "objectType": "Activity"
+        }
+    }
+
+    ADL.XAPIWrapper.sendStatement(statement);
     
 }
 
+//Show result
 function showResult(){
     var result = document.getElementsByClassName("result")[0]
     var final_score = localStorage.getItem('score')
@@ -41,7 +140,7 @@ function showResult(){
     localStorage.setItem('score', 0)
 }
 
-//Send statement
+//Send statement over first button click
 function sendOverStatement(){
 
     var statement = {
@@ -74,8 +173,10 @@ function sendOverStatement(){
 //On Blur Events
 function saveName(){
     name = document.getElementById('nameEntered').value;
+    localStorage.setItem('name', name)
 }
 
 function saveEmail(){
     email = document.getElementById('userEmail').value;
+    localStorage.setItem('email', email)
 }
