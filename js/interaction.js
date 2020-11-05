@@ -33,7 +33,11 @@ function showResult(){
     var result = document.getElementsByClassName("result")[0]
     var final_score = localStorage.getItem('score')
     console.log('final', final_score)
-    result.innerHTML = parseInt(final_score)/total_ques*100 + "%"
+    if (parseInt(final_score)/total_ques*100 >= 50){
+        result.innerHTML = parseInt(final_score)/total_ques*100 + "%" + "   You passed!!!"
+    } else {
+        result.innerHTML = parseInt(final_score)/total_ques*100 + "%" + "   You failed :("
+    }
     localStorage.setItem('score', 0)
 }
 
