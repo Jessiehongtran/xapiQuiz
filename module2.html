@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>xAPI in Action Example</title>
+        <!-- Mobile Specific Metas -->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+
+        <!-- Custom CSS -->
+        <link rel="stylesheet" type="text/css" href="css/module.css">
+    </head>
+    <body onload="pageLoaded()">
+        <div class="container">
+            <h3>A cat says...</h3>
+            <ul>
+                <li>
+                    <input
+                        type="radio"
+                        name="cat"
+                        class="cat"
+                        value="false"
+                        onChange="handleChangeModule2(0)"
+                    />
+                    <span>meo</span>
+                </li>
+                <li>
+                    <input
+                        type="radio"
+                        name="cat"
+                        value="true"
+                        class="cat"
+                        onChange="handleChangeModule2(1)"
+                    />
+                    <span>mii</span>
+                </li>
+                <li>
+                    <input
+                        type="radio"
+                        name="cat"
+                        value="false"
+                        class="cat"
+                        onChange="handleChangeModule2(2)"
+                    />
+                    <span>maaa</span>
+                </li>
+                <li>
+                    <input
+                        type="radio"
+                        name="cat"
+                        value="false"
+                        class="cat"
+                        onChange="handleChangeModule2(3)"
+                    />
+                    <span>mee</span>
+                </li>
+            </ul>
+            <a href="result.html" class="btn btn-primary">NEXT</a>
+        </div>
+
+        <!-- Bootstrap -->
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+
+        <!-- Custom JS -->
+        <script src="js/interaction.js"></script>
+
+        <!-- xAPI -->
+        <script src="js/cryptojs_v3.1.2.js"></script>
+        <script src="js/xapiwrapper.js"></script>
+    </body>
+</html>
