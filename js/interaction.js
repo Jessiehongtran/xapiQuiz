@@ -6,8 +6,7 @@ var score = 0
 
 //Page Load Function
 function pageLoaded(){
-    localStorage.setItem('name', name)
-    localStorage.setItem('email', email)
+
 }
 
 
