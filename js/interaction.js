@@ -14,20 +14,27 @@ function handleChangeModule1(n){
     alert(x)
     if (x == "true"){
         score += 1
+        localStorage.setItem('score', score)
     }
+    
 }
 
 function handleChangeModule2(n){
     var y = document.getElementsByClassName("cat")[parseInt(n)].value;
     alert(y)
-    if (x == "true"){
-        score += 1
+    if (y == "true"){
+        var newScore = parseInt(localStorage.getItem('score')) + 1
+        localStorage.setItem('score', newScore)
     }
+    
 }
 
 function showResult(){
     var result = document.getElementsByClassName("result")[0]
-    result.innerHTML = score/total_ques*100 + "%"
+    var final_score = localStorage.getItem('score')
+    console.log('final', final_score)
+    result.innerHTML = parseInt(final_score)/total_ques*100 + "%"
+    localStorage.setItem('score', 0)
 }
 
 //Send statement
