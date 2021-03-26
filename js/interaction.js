@@ -1,12 +1,126 @@
-//Variables
-var name = "Sammy McGee";
-var email = "hongtran@gmail.com"
+//Various variables
 var total_ques = 2
 var score = 0
+var videoHalfWay = 0;
+var currentTime;
+var durationTime;
+
+//Actor Variables
+var name = "Sammy McGee";
+var email = "hongtran@gmail.com"
+var firstPlayDone = false
+
+//Video reference
+var video1 = document.getElementById('video1')
 
 //Page Load Function
 function pageLoaded(){
 
+    //Pause video
+    video1.pause();
+
+    //Connecting to LRS
+    var conf = {
+        "endppoint": "https://cloud.scorm.com/lrs/LPZZAMZVOU/sandbox/",
+        "auth": "Basic " + toBase64('NTGZZ3ZWVyucZfILuwQ:Vvd1I0sd0gi7Lpyczmc')
+    }
+    ADL.XAPIWrapper.changeConfig(conf);
+
+    //Show prompt
+    $('#namePrompt').modal('show')
+
+}
+
+//GET xAPI statement
+function getxAPIStatement(actorEmail, actorName, verbId, verbDisplay, objectID, objectName, objectDescription){
+    return {
+        "actor": {
+            "mbox": "mailto:" + actorEmail,
+            "name": actorName,
+            "objectType": "Agent"
+        },
+        "verb": {
+            "id": verbId,
+            "display": {"en-US": verbDisplay}
+        },
+        "object": {
+            "id": objectID,
+            "definition": {
+                "name": {"en-US": objectName},
+                "description": {"en-US": objectDescription}
+            },
+            "objectType": "Activity"
+        }
+    }
+}
+
+//Video loaded
+video1.onloadedmetadata = function(){
+    //Figuring out times
+    videoHalfWay = Math.round(video1.duration/2)
+    durationTime = Math.round(video1.duration);
+}
+
+//Video Half Way
+video1.ontimeupdate = function(){
+    //Update current time
+    currentTime = Math.round(video1.currentTime);
+
+    if (currentTime == videoHalfWay){
+        var videoHalf = getxAPIStatement(
+                            localStorage.getItem('email'),
+                            localStorage.getItem('name'),
+                            "http://activitystrea.ms/schema/1.0/consume",
+                            "consumed",
+                            "http://punklearning.com/xapi/video_1",
+                            "Video 1",
+                            "at least half of the video"
+                        )
+
+        ADL.XAPIWrapper.sendStatement(videoHalf);
+    }
+
+    if (currentTime == durationTime){
+        var videoEnd = getxAPIStatement(
+                            localStorage.getItem('email'),
+                            localStorage.getItem('name'),
+                            "http://activitystrea.ms/schema/1.0/complete",
+                            "completed",
+                            "http://punklearning.com/xapi/video1",
+                            "Video 1",
+                            " the video"
+                        )
+
+        ADL.XAPIWrapper.sendStatement(videoEnd);
+    }
+}
+
+//Video play
+video1.onplaying = function(){
+    var videoPlay = getxAPIStatement(
+                        localStorage.getItem('email'),
+                        localStorage.getItem('name'),
+                        "http://adlnet.gov/expapi/verbs/initialized",
+                        "initialized",
+                        "http://punklearning.com/xapi/video1",
+                        "Video 1",
+                        " the video"
+                    )
+    ADL.XAPIWrapper.sendStatement(videoPlay); 
+}
+
+//Video pause
+video1.onpause = function(){
+    var videoPause = getxAPIStatement(
+                        localStorage.getItem('email'),
+                        localStorage.getItem('name'),
+                        "https://w3id.org/xapi/video/verbs/paused",
+                        "paused",
+                        "http://punklearning.com/xapi/video1",
+                        "Video 1",
+                        " the video at " + currentTime + " seconds."
+                    )
+    ADL.XAPIWrapper.sendStatement(videoPause); 
 }
 
 
@@ -19,25 +133,15 @@ function handleChangeModule1(n){
         localStorage.setItem('score', score)
     }
 
-    var statement = {
-        "actor": {
-            "mbox": "mailto:" + localStorage.getItem('email'),
-            "name": localStorage.getItem('name'),
-            "objectType": "Agent"
-        },
-        "verb": {
-            "id": "https://w3id.org/xapi/dod-isd/verbs/accessed",
-            "display": {"en-US": "accessed"}
-        },
-        "object": {
-            "id": "http://punklearning.com/xapi/access_question_1",
-            "definition": {
-                "name": {"en-US": "Accessed question 1"},
-                "description": {"en-US": "Accessed question 1"}
-            },
-            "objectType": "Activity"
-        }
-    }
+    var statement = getxAPIStatement(
+                        localStorage.getItem('email'),
+                        localStorage.getItem('name'),
+                        "https://w3id.org/xapi/dod-isd/verbs/accessed",
+                        "accessed",
+                        "http://punklearning.com/xapi/access_question_1",
+                        "question 1",
+                        "question 1"
+                    )
 
     ADL.XAPIWrapper.sendStatement(statement);
     
@@ -45,50 +149,30 @@ function handleChangeModule1(n){
 
 //Send statement after question 1
 function sendDoneQues1(){
-    var statement = {
-        "actor": {
-            "mbox": "mailto:" + localStorage.getItem('email'),
-            "name": localStorage.getItem('name'),
-            "objectType": "Agent"
-        },
-        "verb": {
-            "id": "https://w3id.org/xapi/dod-isd/verbs/advanced",
-            "display": {"en-US": "advanced"}
-        },
-        "object": {
-            "id": "http://punklearning.com/xapi/advanced_1",
-            "definition": {
-                "name": {"en-US": "Move on from question 1"},
-                "description": {"en-US": "Move on from question 1"}
-            },
-            "objectType": "Activity"
-        }
-    }
+    var statement = getxAPIStatement(
+                        localStorage.getItem('email'),
+                        localStorage.getItem('name'),
+                        "https://w3id.org/xapi/dod-isd/verbs/advanced",
+                        "advanced",
+                        "http://punklearning.com/xapi/advanced_1",
+                        "question 2",
+                        "to question 2"
+                    )
 
     ADL.XAPIWrapper.sendStatement(statement);
 }
 
 //Send statement after question 2
 function sendDoneQues2(){
-    var statement = {
-        "actor": {
-            "mbox": "mailto:" + localStorage.getItem('email'),
-            "name": localStorage.getItem('name'),
-            "objectType": "Agent"
-        },
-        "verb": {
-            "id": "https://w3id.org/xapi/dod-isd/verbs/advanced",
-            "display": {"en-US": "advanced"}
-        },
-        "object": {
-            "id": "http://punklearning.com/xapi/advanced_2",
-            "definition": {
-                "name": {"en-US": "Move on from question 2"},
-                "description": {"en-US": "Move on from question 2"}
-            },
-            "objectType": "Activity"
-        }
-    }
+    var statement = getxAPIStatement(
+                        localStorage.getItem('email'),
+                        localStorage.getItem('name'),
+                        "https://w3id.org/xapi/dod-isd/verbs/advanced",
+                        "advanced",
+                        "http://punklearning.com/xapi/advanced_2",
+                        "from question 2",
+                        "from question 2"
+                     )
 
     ADL.XAPIWrapper.sendStatement(statement);
 }
@@ -102,25 +186,15 @@ function handleChangeModule2(n){
         localStorage.setItem('score', newScore)
     }
 
-    var statement = {
-        "actor": {
-            "mbox": "mailto:" + localStorage.getItem('email'),
-            "name": localStorage.getItem('name'),
-            "objectType": "Agent"
-        },
-        "verb": {
-            "id": "https://w3id.org/xapi/dod-isd/verbs/accessed",
-            "display": {"en-US": "accessed"}
-        },
-        "object": {
-            "id": "http://punklearning.com/xapi/access_question_2",
-            "definition": {
-                "name": {"en-US": "Accessed question 2"},
-                "description": {"en-US": "Accessed question 2"}
-            },
-            "objectType": "Activity"
-        }
-    }
+    var statement = getxAPIStatement(
+                        localStorage.getItem('email'), 
+                        localStorage.getItem('name'), 
+                        "https://w3id.org/xapi/dod-isd/verbs/accessed", 
+                        "accessed", 
+                        "http://punklearning.com/xapi/access_question_2", 
+                        "question 2", 
+                        "question 2"
+                    )
 
     ADL.XAPIWrapper.sendStatement(statement);
     
@@ -133,8 +207,11 @@ function showResult(){
     console.log('final', final_score)
     if (parseInt(final_score)/total_ques*100 >= 50){
         result.innerHTML = parseInt(final_score)/total_ques*100 + "%" + "   You passed!!!"
-    } else {
+    } else if (parseInt(final_score)/total_ques*100 < 50) {
         result.innerHTML = parseInt(final_score)/total_ques*100 + "%" + "   You failed :("
+    }
+    else {
+        result.innerHTML = "0%" + "   You failed :("
     }
     localStorage.setItem('score', 0)
 }
@@ -142,25 +219,15 @@ function showResult(){
 //Send statement over first button click
 function sendOverStatement(){
 
-    var statement = {
-        "actor": {
-            "mbox": "mailto:" + email,
-            "name": name,
-            "objectType": "Agent"
-        },
-        "verb": {
-            "id": "http://adlnet.gov/expapi/verbs/interacted",
-            "display": {"en-US": "interacted"}
-        },
-        "object": {
-            "id": "http://punklearning.com/xapi/simple_button",
-            "definition": {
-                "name": {"en-US": "Simple button example"},
-                "description": {"en-US": "Simple button example xAPI button"}
-            },
-            "objectType": "Activity"
-        }
-    }
+    var statement = getxAPIStatement(
+                        email, 
+                        name, 
+                        "http://adlnet.gov/expapi/verbs/interacted", 
+                        "interacted", 
+                        "http://punklearning.com/xapi/simple_button", 
+                        "Simple button example", 
+                        "Simple button example xAPI button"
+                    )
 
     alert('Statement has been sent over')
 
