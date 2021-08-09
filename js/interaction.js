@@ -21,8 +21,8 @@ function pageLoaded(){
 
     //Connecting to LRS
     var conf = {
-        "endppoint": "https://cloud.scorm.com/lrs/LPZZAMZVOU/sandbox/",
-        "auth": "Basic " + toBase64('NTGZZ3ZWVyucZfILuwQ:Vvd1I0sd0gi7Lpyczmc')
+        "endppoint": "https://cloud.scorm.com/lrs/O57KUPW99H/sandbox/",
+        "auth": "Basic " + toBase64('XUgMo-atjvB1d_NVjJo:k8v2QdNti8_2zvzbfvA')
     }
     ADL.XAPIWrapper.changeConfig(conf);
 
