@@ -117,10 +117,10 @@ function isDate(date) {
     var Config = function()
     {
         var conf = {};
-        conf['endpoint'] = "https://cloud.scorm.com/lrs/LPZZAMZVOU/sandbox/";
+        conf['endpoint'] = "https://cloud.scorm.com/lrs/O57KUPW99H/sandbox/";
         //try
         //{
-            conf['auth'] = "Basic " + toBase64('TRsCwMJt08TM7BeYvzk:aaW6SQFFdrOOvjiDELg');
+            conf['auth'] = "Basic " + toBase64('XUgMo-atjvB1d_NVjJo:k8v2QdNti8_2zvzbfvA');
         //}
         //catch (e)
         //{
